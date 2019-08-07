@@ -17,6 +17,15 @@ class BaseModel(db.Model):
         session.delete(self)
         session.commit()
 
+class User(BaseModel):
+    """
+    用户表
+    """
+    __tablename__ = "user"
+    username = db.Column(db.String(32))
+    password = db.Column(db.String(32))
+    identity = db.Column(db.Integer) # 1教室 0学生
+    identity_id = db.Column(db.Integer,nullable=True)
 
 class Student(BaseModel):
     """

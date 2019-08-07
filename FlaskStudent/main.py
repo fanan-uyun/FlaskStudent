@@ -1,11 +1,20 @@
 # import os
 import pymysql
 from flask import Flask
+from flask import session
 from flask_sqlalchemy import SQLAlchemy
 
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
+
+# 使用类配置加载
+app.config.from_object('config.DebugConfig')
+
+
+# 关联sqlalchemy和flask应用
+db = SQLAlchemy(app)
+
 
 # BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 #
@@ -14,8 +23,4 @@ app = Flask(__name__)
 # app.config["SQLALCHEMY_COMMIT_ON_TEARDOWN"] = True
 # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 # app.config.from_pyfile('settings.py')
-app.config.from_object('config.DebugConfig')
 
-
-# 关联sqlalchemy和flask应用
-db = SQLAlchemy(app)

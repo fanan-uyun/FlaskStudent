@@ -1,23 +1,63 @@
 """
 视图和路由文件
 """
+import hashlib
+from flask import request
+from flask import redirect
+
 from flask import render_template
 from FlaskStudent.main import app
-from FlaskStudent.models import Student
+from FlaskStudent.models import *
+from FlaskStudent.main import session
 
-@app.route("/register/")
+def SetPassword(password):
+    md5 = hashlib.md5()
+    md5.update(password.encode())
+    return md5.hexdigest()
+
+@app.route("/register/",methods=["GET","POST"])
 def register():
-    return render_template("register.html",**locals())
+    if request.method == 'POST':
+        form_data = request.form
+        username = form_data.get("username")
+        password = form_data.get("password")
+        identity = form_data.get("identity")
 
-@app.route("/login/")
+        user = User()
+        user.username = username
+        user.password = SetPassword(password)
+        user.identity = int(identity)
+        user.save()
+
+        return redirect('/login/')
+    return render_template("register.html")
+
+@app.route("/login/",methods=["GET","POST"])
 def login():
-    students = Student.query.all()
-    return render_template("student_lists.html",**locals())
+    if request.method == "POST":
+        form_data = request.form
+        username = form_data.get("username")
+        password = form_data.get("password")
+
+        user = User.query.filter_by(username=username).first()
+        if user:
+            db_password = user.password
+            md5_password = SetPassword(password)
+            if md5_password == db_password:
+                # 验证成功，跳转首页
+                response = redirect('/index/')
+                # 设置cookie
+                response.set_cookie("username",username)
+                response.set_cookie("user_id",str(user.id))
+                # 设置session
+                session["username"] = username
+                # 返回跳转页面
+                return response
+    return render_template("login.html")
 
 @app.route("/index/")
 def index():
-    students = Student.query.all()
-    return render_template("student_lists.html",**locals())
+    return render_template("index.html")
 
 @app.route("/logout/")
 def logout():
