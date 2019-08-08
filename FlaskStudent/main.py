@@ -8,6 +8,7 @@ from flask_wtf import CSRFProtect # 导入csrf校验模块
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
+
 # 开启csrf
 csrf = CSRFProtect(app)
 # 使用类配置加载

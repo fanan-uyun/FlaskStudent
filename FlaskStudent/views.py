@@ -2,15 +2,17 @@
 视图和路由文件
 """
 import hashlib
+from flask import jsonify
 from flask import request
 from flask import redirect
 
 from flask import render_template
 from FlaskStudent.main import app
 from FlaskStudent.models import *
+from FlaskStudent.main import csrf
 from FlaskStudent.main import session
 from FlaskStudent.forms import TeacherForm
-from FlaskStudent.main import csrf
+
 
 def SetPassword(password):
     md5 = hashlib.md5()
@@ -28,6 +30,7 @@ def loginValid(fun):
         return redirect('/login/')
     return inner
 
+@csrf.exempt
 @app.route("/register/",methods=["GET","POST"])
 def register():
     if request.method == 'POST':
@@ -105,6 +108,25 @@ def add_teacher():
 @app.route("/csrf_403/")
 def csrf_tonken_error(reason):
     return render_template("csrf_403.html")
+
+# ajax 前端校验
+@app.route("/userValid/")
+def userValid():
+    # 定义json字典数据格式
+    result = {
+        "code":"",
+        "data":""
+    }
+    username = request.args.get("username")
+    if username:
+        user = User.query.filter_by(username=username).first()
+        if user:
+            result["code"] = 400
+            result["data"] = "用户名已存在"
+        else:
+            result["code"] = 200
+            result["data"] = "用户名未被注册，可以使用"
+    return jsonify(result)
 
 @app.route("/student_list/")
 def student_list():
