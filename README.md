@@ -8,3 +8,6 @@
 ## 主要功能
 
  - **学生管理系统后台flask模型创建**
+ - **注册登录功能，cookie，session设置**
+ - **session和sqlalchemy中会话命名冲突问题**
+ - **退出删除cookie、session**

@@ -1,7 +1,8 @@
 from FlaskStudent.main import db
 
 # 创建数据库回话，基于会话进行增删改查
-session = db.session()
+# 由于此处session与flask session设置冲突，改为sess
+sess = db.session()
 
 class BaseModel(db.Model):
     __abstract__ = True # 抽象表为True，代表当前类为抽象类，不会被创建
@@ -9,13 +10,13 @@ class BaseModel(db.Model):
 
     # 数据保存方法
     def save(self):
-        session.add(self)
-        session.commit()
+        sess.add(self)
+        sess.commit()
 
      # 数据删除方法
     def delete_data(self):
-        session.delete(self)
-        session.commit()
+        sess.delete(self)
+        sess.commit()
 
 class User(BaseModel):
     """

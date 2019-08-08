@@ -57,12 +57,16 @@ def login():
 
 @app.route("/index/")
 def index():
+    print(session.get('username'))
     return render_template("index.html")
 
-@app.route("/logout/")
+@app.route("/logout/",methods=["GET","POST"])
 def logout():
-    students = Student.query.all()
-    return render_template("student_lists.html",**locals())
+    response = redirect('/login/')
+    for key in request.cookies:
+        response.delete_cookie(key)
+    del session["username"]
+    return response
 
 
 @app.route("/student_list/")
