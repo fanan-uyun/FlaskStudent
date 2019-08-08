@@ -15,6 +15,17 @@ def SetPassword(password):
     md5.update(password.encode())
     return md5.hexdigest()
 
+def loginValid(fun):
+    def inner(*args,**kwargs):
+        cookie_username = request.cookies.get("username")
+        id = request.cookies.get("user_id")
+        session_username = session.get("username")
+        if cookie_username and id and session_username:
+            if cookie_username == session_username:
+                fun(*args,**kwargs)
+        return redirect('/login/')
+    return inner
+
 @app.route("/register/",methods=["GET","POST"])
 def register():
     if request.method == 'POST':
@@ -56,8 +67,9 @@ def login():
     return render_template("login.html")
 
 @app.route("/index/")
+@loginValid
 def index():
-    print(session.get('username'))
+    # print(session.get('username'))
     return render_template("index.html")
 
 @app.route("/logout/",methods=["GET","POST"])
