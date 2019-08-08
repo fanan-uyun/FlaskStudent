@@ -11,3 +11,4 @@
  - **注册登录功能，cookie，session设置**
  - **session和sqlalchemy中会话命名冲突问题**
  - **退出删除cookie、session**
+ - **flask form表单提交**

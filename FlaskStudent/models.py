@@ -35,7 +35,7 @@ class Student(BaseModel):
     __tablename__ = "student"
     name = db.Column(db.String(32))
     age = db.Column(db.Integer)
-    gender = db.Column(db.String(32))
+    gender = db.Column(db.Integer) # 1 男 2 女
     to_attend = db.relationship(
         "Attend",
         backref = "to_student"
@@ -101,5 +101,5 @@ class Teacher(BaseModel):
     __tablename__ = "teacher"
     name = db.Column(db.String(32))
     age = db.Column(db.Integer)
-    gender = db.Column(db.String(32))
+    gender = db.Column(db.Integer)
     course_id = db.Column(db.Integer,db.ForeignKey("course.id"))

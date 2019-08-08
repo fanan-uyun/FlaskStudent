@@ -9,7 +9,7 @@ pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 # 开启csrf
-CSRFProtect(app)
+csrf = CSRFProtect(app)
 # 使用类配置加载
 app.config.from_object('config.DebugConfig')
 

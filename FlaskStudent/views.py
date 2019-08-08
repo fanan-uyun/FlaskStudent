@@ -10,6 +10,7 @@ from FlaskStudent.main import app
 from FlaskStudent.models import *
 from FlaskStudent.main import session
 from FlaskStudent.forms import TeacherForm
+from FlaskStudent.main import csrf
 
 def SetPassword(password):
     md5 = hashlib.md5()
@@ -81,11 +82,29 @@ def logout():
     del session["username"]
     return response
 
-
+# @csrf.exempt # 临时关闭csrf校验
 @app.route("/add_teacher/",methods=["GET","POST"])
 def add_teacher():
     teacher_form = TeacherForm()
+    if request.method == "POST":
+        name = request.form.get("name")
+        age = request.form.get("age")
+        gender = request.form.get("gender")
+        course = request.form.get("course")
+
+        teacher = Teacher()
+        teacher.name = name
+        teacher.age = age
+        teacher.gender = gender
+        teacher.course_id = course
+        teacher.save()
     return render_template("add_teacher.html",**locals())
+
+# csrf 如果没有配置跳转的错误页面
+@csrf.error_handler
+@app.route("/csrf_403/")
+def csrf_tonken_error(reason):
+    return render_template("csrf_403.html")
 
 @app.route("/student_list/")
 def student_list():
