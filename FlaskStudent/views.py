@@ -9,6 +9,7 @@ from flask import render_template
 from FlaskStudent.main import app
 from FlaskStudent.models import *
 from FlaskStudent.main import session
+from FlaskStudent.forms import TeacherForm
 
 def SetPassword(password):
     md5 = hashlib.md5()
@@ -80,6 +81,11 @@ def logout():
     del session["username"]
     return response
 
+
+@app.route("/add_teacher/",methods=["GET","POST"])
+def add_teacher():
+    teacher_form = TeacherForm()
+    return render_template("add_teacher.html",**locals())
 
 @app.route("/student_list/")
 def student_list():

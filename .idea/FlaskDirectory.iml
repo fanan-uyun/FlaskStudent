@@ -10,6 +10,7 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/FlaskStudent/templates" />
+        <option value="$MODULE_DIR$/FlaskStudent" />
       </list>
     </option>
   </component>
