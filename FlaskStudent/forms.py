@@ -1,11 +1,11 @@
 import wtforms # 定义字段
-from flask_wtf import Form # 定义表单
+from flask_wtf import FlaskForm # 定义表单
 from wtforms import validators # 定义校验
 from FlaskStudent.models import Course
 
 course_list = [(c.id,c.name) for c in Course.query.all()]
 
-class TeacherForm(Form):
+class TeacherForm(FlaskForm):
     """
     form字段的参数
     label=None, 表单的标签
@@ -25,7 +25,7 @@ class TeacherForm(Form):
             "placeholder": "教师姓名"
         },
         validators=[
-            validators.DataRequired("姓名不可以为空")
+            validators.DataRequired('姓名不可以为空')
         ]
     )
     age = wtforms.IntegerField(

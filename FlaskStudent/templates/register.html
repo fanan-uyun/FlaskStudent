@@ -73,12 +73,16 @@
       $("#username").blur(
           function () {
               var username = $("#username").val();
-              var url = "/userValid/?username="+username;
+              var url = "/userValid/";
+              var send_data = {
+                  "username": username,
+                  "csrf_token": '{{ csrf_token() }}'
+              };
               $.ajax(
                   {
                       url: url,
-                      type: "get",
-                      data: "",
+                      type: "post",
+                      data: send_data,
                       success: function (data) {
                           if (data.code == 400){
                               $("#submit").attr("disabled",true)
@@ -95,6 +99,32 @@
           }
       )
   </script>
+{#  <script>#}
+{#      $("#username").blur(#}
+{#          function () {#}
+{#              var username = $("#username").val();#}
+{#              var url = "/userValid/?username="+username;#}
+{#              $.ajax(#}
+{#                  {#}
+{#                      url: url,#}
+{#                      type: "get",#}
+{#                      data: "",#}
+{#                      success: function (data) {#}
+{#                          if (data.code == 400){#}
+{#                              $("#submit").attr("disabled",true)#}
+{#                          } else{#}
+{#                              $("#submit").attr("disabled",false)#}
+{#                          }#}
+{#                          $("#message").text(data.data)#}
+{#                      },#}
+{#                      error: function (error) {#}
+{#                          console.log(error)#}
+{#                      }#}
+{#                  }#}
+{#              )#}
+{#          }#}
+{#      )#}
+{#  </script>#}
 
 </body>
 

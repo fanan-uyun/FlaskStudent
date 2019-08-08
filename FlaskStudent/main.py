@@ -3,13 +3,13 @@ import pymysql
 from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import CSRFProtect # 导入csrf校验模块
+from flask_wtf import CSRFProtect # 导入csrf校验模块,csrfProtect在1.0之后移除
 
 pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
-# 开启csrf
+# 关联csrf和flask应用
 csrf = CSRFProtect(app)
 # 使用类配置加载
 app.config.from_object('config.DebugConfig')

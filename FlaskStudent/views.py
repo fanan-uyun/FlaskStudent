@@ -110,22 +110,23 @@ def csrf_tonken_error(reason):
     return render_template("csrf_403.html")
 
 # ajax 前端校验
-@app.route("/userValid/")
+@app.route("/userValid/",methods=["GET","POST"])
 def userValid():
     # 定义json字典数据格式
     result = {
         "code":"",
         "data":""
     }
-    username = request.args.get("username")
-    if username:
-        user = User.query.filter_by(username=username).first()
-        if user:
-            result["code"] = 400
-            result["data"] = "用户名已存在"
-        else:
-            result["code"] = 200
-            result["data"] = "用户名未被注册，可以使用"
+    if request.method == "POST":
+        username = request.form.get("username")
+        if username:
+            user = User.query.filter_by(username=username).first()
+            if user:
+                result["code"] = 400
+                result["data"] = "用户名已存在"
+            else:
+                result["code"] = 200
+                result["data"] = "用户名未被注册，可以使用"
     return jsonify(result)
 
 @app.route("/student_list/")
